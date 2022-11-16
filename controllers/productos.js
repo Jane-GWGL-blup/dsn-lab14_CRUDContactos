@@ -7,7 +7,7 @@ module.exports.upload = async (req, res ) => {
         console.log(req);
         const bucket = req.body.bucket
         const file = req.files.file;
-        console.log("Hola")
+        console.log("uploadToBucket")
         const result = await uploadToBucket(bucket, file);
         res.json(result)
     };
@@ -22,7 +22,9 @@ exports.create = async (req, res) => {
         const { nombre, descripcion, marca, precio, stock, file, _id } = req.body;
     
         console.log(req.body);
+        console.log(req.body._id);
         console.log(_id);
+        console.log("Aqui create 1");
 
         if (req.body._id) {
                 console.log("ID: "+ req.body._id);
@@ -35,14 +37,24 @@ exports.create = async (req, res) => {
                         imagen: file,    
                 }, { new: true });
                 res.redirect('/productos');
+        
+                /*console.log("ID: "+ req.body._id);
+                await Producto.findByIdAndUpdate(_id, {
+                        nombre: nombre,
+                        descripcion: descripcion,  
+                        marca: marca,
+                        precio: precio,
+                        stock: stock,
+                        imagen: file,    
+                }, { new: true });
+                res.redirect('/productos');*/
         } else {
         //
         console.log(req);
         const bucket = 's3-bucket-nclab09'
         const file = req.files.imagen
-        console.log("Hola")
+        console.log("New Product")
         const result = await uploadToBucket(bucket, file);
-        console.log("Hola2")
         //res.json(result)
         //
         saveNewData(req,result.Location,res)
@@ -74,6 +86,28 @@ const saveNewData = (req, url, res) => {
                 res.redirect('/productos');
             }
       });
+}
+
+const deleteImage = (req) => {
+        const  id  = req.params.id;
+        Producto.findById({_id:id}).exec(function(err, productos){
+                if(err){
+                        console.log(err)
+                }else{
+                        const imageName = productos.imagen.split('/')
+                        console.log(imageName[3])
+                        let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };
+                        Producto.findByIdAndRemove(id,function(err, producto){
+                                if(err){
+                                        return res.send(500, err);
+                                }
+                                        
+                                deleteObject(params);
+
+                                
+                        });
+                }
+        })
 }
 
 exports.deleteProducto = async (req, res) => {

@@ -11,17 +11,15 @@ btnUpload.addEventListener('click',event => {
     const marca=document.querySelector('#marca').value
     const precio=document.querySelector('#precio').value
     const stock=document.querySelector('#stock').value
-
-     const formData = new FormData()
+    
+    const formData = new FormData()
 
     formData.append('imagen', file);
     formData.append('nombre',name)
     formData.append('descripcion',descripcion)
-   // formData.append('imagen',imagen)
     formData.append('marca',marca)
     formData.append('precio',precio)
     formData.append('stock',stock) 
-    console.log(name)
     uploadFile(formData); 
     
 
