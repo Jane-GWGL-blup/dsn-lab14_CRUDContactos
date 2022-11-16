@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700" rel="stylesheet" type="text/css">
     <script src="https://kit.fontawesome.com/998eab3163.js" crossorigin="anonymous"></script>
 </head>
-<body>
 <nav class="navbar navbar-dark navbar-static-top navbar-expand-md">
     <div class="container">
         <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span>
@@ -27,8 +26,6 @@
     <h1>Contactos</h1>
 </div>
 <div class="container">
-
-            
                 <p>
                 <center>
                     <table class="table table-hover ">
@@ -72,9 +69,9 @@
                                     
                                         <button class="btnAction">
                                         
-                                            <i  id="/contactos/deletecontacto/<%= contacto._id %>" 
-                                                onclick="delete_row(this.id)" 
-                                                class="fa-solid fa-user-xmark"></i>
+                                            <a  id="/contactos/deletecontacto/<%= contacto._id %>" 
+                                                href="/contactos/deletecontacto/<%= contacto._id %>" 
+                                                class="fa-solid fa-user-xmark"></a>
                                             
                                         </button>
                                     </center>
@@ -89,11 +86,9 @@
    <div class="row">
         <div class="mx-auto">
                 <div class="col py-2">
-                  <!-- 
                     <form action="/contactos/addcontacto" method="post" id="form" >
-                        <div class="infop"><h6 class="caption ">Formulario para editar sus datos</h6></div>
-                        <p class="info">Click en el botón de editar</p>
-                        
+                        <div class="infop"><h6 class="caption ">Formulario para editar o crear su registro de contacto</h6></div>
+                        <p class="info">Click en el botón de editar si quiere editar su contacto</p>
                         <div class="form-group row">
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="nombre" placeholder="Nombre" name="nombre">
@@ -102,11 +97,6 @@
                         <div class="form-group row">
                             <div class="col-sm-10">
                                 <input type="text"  class="form-control" id="apellido" placeholder="Apellido" name="apellido">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control"  id="file" name="imagen">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -124,76 +114,23 @@
                                 <input type="text" class="form-control" placeholder="Direccion" id="direccion" name="direccion">
                             </div>
                         </div>
-                        <input hidden type="text" placeholder="_id" id="_id" name="_id">
-                        <button class="btn button" id="submit" type="submit" >Enviar</button>
-                    </form>-->
-                </div>
-<!-- Segundo formulario-->
-                <div class="col">
-                    <form>
-                        <div class="infop"><h6 class="caption ">Formulario para editar sus datos</h6></div>
-                        <p class="info">Click en el botón de editar</p>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nombre1" placeholder="Nombre" name="nombre">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" id="apellido1" placeholder="Apellido" name="apellido">
-                            </div>
-                        </div>
                         <div class="form-group row">
                             <div class="col-sm-10">
                                 <input type="file" class="form-control"  id="file1" name="imagen">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" id="email1" placeholder="Email" name="email">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" id="telefono1" placeholder="Telefono" name="telefono">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" placeholder="Direccion" id="direccion1" name="direccion">
-                            </div>
-                        </div>
                         <input hidden type="text" placeholder="_id" id="_id" name="_id">
-                        <input class="btn button" id="submit1" type="submit" value="Enviar">
-                        <input class="btn button_reset" type="reset" value="Reset">
+                        <button class="btn button" type="submit" >Enviar</button>
                     </form>
                 </div>
                 </div>
         </div> 
     </div>
-  <script>
-
-    function fill_form(contacto) {
-        
-        dataContacto = JSON.parse(contacto);  
-        
-        document.getElementById("nombre1").value=dataContacto.nombre;
-        document.getElementById("apellido1").value=dataContacto.apellido;
-        document.getElementById("file1").files[0]=dataContacto.imagen;
-        document.getElementById("email1").value=dataContacto.email;
-        document.getElementById("telefono1").value=dataContacto.telefono;
-        document.getElementById("direccion1").value=dataContacto.direccion;
-        document.getElementById("_id").value=dataContacto._id;
-    };
-
-    
-    function delete_row(route) {
-        console.log(route)
-        fetch(route,  {
-            method: 'DELETE'
-        })
-    }
-</script>
-<script src="/js/upload.js"></script>
-</body>
+    <script src="/js/upload.js"></script>
+  <script src="/js/code.js">
+  </script>
 </html>
+
+<!--<img src="<%= contacto.imagen %>" alt="no-image" id="imagen" width="70%" height="50">
+<script src="/js/upload.js"></script>
+document.getElementById("file1").files[0]=dataContacto.imagen;-->

@@ -19,7 +19,7 @@ exports.index = function (req, res) {
 };
 
 exports.create = async (req, res) => {
-        const { nombre, apellido, email, file, telefono, direccion, _id } = req.body;
+        const { nombre, apellido, email, telefono, direccion, file, _id } = req.body;
 
         //const file = req.files.file;
 
@@ -31,11 +31,11 @@ exports.create = async (req, res) => {
                 console.log("ID: "+ req.body._id);
                 await Contacto.findByIdAndUpdate(_id, {
                         nombre: nombre,
-                        apellido: apellido,
-                        imagen: file,
+                        apellido: apellido,  
                         email: email,
                         telefono: telefono,
-                        direccion: direccion,    
+                        direccion: direccion,
+                        imagen: file,    
                 }, { new: true });
                 res.redirect('/contactos');
         } else {
@@ -60,10 +60,10 @@ const saveNewData = (req, url, res) => {
         var newContacto = new Contacto({
                 nombre:req.body.nombre,
                 apellido:req.body.apellido,
-                imagen:url,
                 email:req.body.email,
                 telefono:req.body.telefono,
                 direccion:req.body.direccion,
+                imagen:url,
         });
         
         newContacto.save( function (err) {
