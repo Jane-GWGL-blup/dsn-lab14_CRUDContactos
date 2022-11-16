@@ -1,7 +1,7 @@
 const { errorMonitor } = require('events');
 const { getBuckets,uploadToBucket,deleteObject } = require("../helpers/s3")
 const path = require('path');
-const Contacto = require('../models/contactos');
+const Producto = require('../models/productos');
 
 module.exports.upload = async (req, res ) => {
         console.log(req);
@@ -15,29 +15,26 @@ module.exports.upload = async (req, res ) => {
 
 exports.index = function (req, res) {
         
-    res.sendFile(path.resolve('views/contactos.html'));
+    res.sendFile(path.resolve('views/productos.html'));
 };
 
 exports.create = async (req, res) => {
-        const { nombre, apellido, email, telefono, direccion, file, _id } = req.body;
-
-        //const file = req.files.file;
-
+        const { nombre, descripcion, marca, precio, stock, file, _id } = req.body;
     
         console.log(req.body);
         console.log(_id);
 
         if (req.body._id) {
                 console.log("ID: "+ req.body._id);
-                await Contacto.findByIdAndUpdate(_id, {
+                await Producto.findByIdAndUpdate(_id, {
                         nombre: nombre,
-                        apellido: apellido,  
-                        email: email,
-                        telefono: telefono,
-                        direccion: direccion,
+                        descripcion: descripcion,  
+                        marca: marca,
+                        precio: precio,
+                        stock: stock,
                         imagen: file,    
                 }, { new: true });
-                res.redirect('/contactos');
+                res.redirect('/productos');
         } else {
         //
         console.log(req);
@@ -57,46 +54,45 @@ exports.create = async (req, res) => {
 const saveNewData = (req, url, res) => {
 
         
-        var newContacto = new Contacto({
+        var newProducto = new Producto({
                 nombre:req.body.nombre,
-                apellido:req.body.apellido,
-                email:req.body.email,
-                telefono:req.body.telefono,
-                direccion:req.body.direccion,
+                descripcion:req.body.descripcion,
+                marca:req.body.marca,
+                precio:req.body.precio,
+                stock:req.body.stock,
                 imagen:url,
         });
         
-        newContacto.save( function (err) {
+        newProducto.save( function (err) {
                 if(err) {
-                //res.status(400).send('Unable to save contactos database, probably email ');
                 console.log(err)
-                res.status(400).render('errorcontacto')    
+                res.status(400).render('errorproducto')    
                
             } else { 
-                console.log("new Contacto "+newContacto);
+                console.log("new Producto "+newProducto);
                 //console.log(req.body)
-                res.redirect('/contactos');
+                res.redirect('/productos');
             }
       });
 }
 
-exports.deleteContacto = async (req, res) => {
+exports.deleteProducto = async (req, res) => {
         const  id  = req.params.id;
-        Contacto.findById({_id:id}).exec(function(err, contactos){
+        Producto.findById({_id:id}).exec(function(err, productos){
                 if(err){
                         console.log(err)
                 }else{
-                        const imageName = contactos.imagen.split('/')
+                        const imageName = productos.imagen.split('/')
                         console.log(imageName[3])
                         let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };
-                        Contacto.findByIdAndRemove(id,function(err, contacto){
+                        Producto.findByIdAndRemove(id,function(err, producto){
                                 if(err){
                                         return res.send(500, err);
                                 }
                                         
                                 deleteObject(params);
-                                res.redirect('/contactos');
-                                console.log("Contacto eliminado")
+                                res.redirect('/productos');
+                                console.log("Producto eliminado")
                                 
                         });
                 }
@@ -109,7 +105,7 @@ exports.deleteContacto = async (req, res) => {
 
 exports.list = async (req, res) => {
 
-        Contacto.find({}).exec(async (err, contactos) => {
+        Producto.find({}).exec(async (err, productos) => {
                 if (err) {
                         return res.send(500, err);
                 }
@@ -117,8 +113,8 @@ exports.list = async (req, res) => {
                 const data = await getBuckets();
                 console.log(data.Buckets);
 
-                res.render('getcontacto', {
-                        contactos: contactos,
+                res.render('getproducto', {
+                        productos: productos,
                         buckets:data.Buckets
              });
         });

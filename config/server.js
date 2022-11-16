@@ -4,8 +4,6 @@ require('dotenv').config();
 const express = require('express');
 const exphbs = require('express-handlebars');
 const fileUpload = require('express-fileupload');
-//const contactos = require('../routes/contactos');
-//const upload = require('../routes/upload');
 
 const db = require('../db');
 
@@ -26,11 +24,6 @@ class Server{
     setTemplateEngine(){      
         this.app.set('view engine','html');
         this.app.engine('html', require('ejs').renderFile);
-        /*this.app.engine('hbs',exphbs.engine({
-            extname:'hbs',
-            defaultLayout:'',
-            layoutsDir:''
-        }));*/
     }
 
 
@@ -47,7 +40,7 @@ class Server{
 
 
     routes(){
-        this.app.use('/contactos',require('../routes/contactos'))
+        this.app.use('/productos',require('../routes/productos'))
         //this.app.use('/upload',require('../routes/upload'))
     }
 
