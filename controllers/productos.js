@@ -21,20 +21,25 @@ exports.index = function (req, res) {
 exports.create = async (req, res) => {
         const { nombre, descripcion, marca, precio, stock, file, _id } = req.body;
     
-        console.log(req.body);
+        console.log(req);
         console.log(req.body._id);
         console.log(_id);
-        console.log("Aqui create 1");
 
-        if (req.body._id) {
+       if (req.body._id) {
                 console.log("ID: "+ req.body._id);
+                deleteImage(req);
+
+                const bucket = 's3-bucket-nclab09'
+                const file = req.files.imagen
+                console.log("New Product")
+                const result = await uploadToBucket(bucket, file);
                 await Producto.findByIdAndUpdate(_id, {
                         nombre: nombre,
                         descripcion: descripcion,  
                         marca: marca,
                         precio: precio,
                         stock: stock,
-                        imagen: file,    
+                        imagen: result.Location,    
                 }, { new: true });
                 res.redirect('/productos');
         
@@ -97,15 +102,12 @@ const deleteImage = (req) => {
                         const imageName = productos.imagen.split('/')
                         console.log(imageName[3])
                         let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };
-                        Producto.findByIdAndRemove(id,function(err, producto){
-                                if(err){
-                                        return res.send(500, err);
-                                }
+                        
                                         
-                                deleteObject(params);
+                        deleteObject(params);
 
                                 
-                        });
+                       
                 }
         })
 }

@@ -11,6 +11,7 @@ btnUpload.addEventListener('click',event => {
     const marca=document.querySelector('#marca').value
     const precio=document.querySelector('#precio').value
     const stock=document.querySelector('#stock').value
+    const id = document.querySelector('#_id').value
     
     const formData = new FormData()
 
@@ -19,7 +20,8 @@ btnUpload.addEventListener('click',event => {
     formData.append('descripcion',descripcion)
     formData.append('marca',marca)
     formData.append('precio',precio)
-    formData.append('stock',stock) 
+    formData.append('stock',stock)
+    formData.append('_id',id)
     uploadFile(formData); 
     
 
