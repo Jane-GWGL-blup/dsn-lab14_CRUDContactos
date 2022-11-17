@@ -1,7 +1,6 @@
 //definiendo la l+ogica
 //referencia al sdk
 const S3 = require('aws-sdk/clients/s3')
-//referencia convertir el archivo en la carpeta temporal en string
 const fs = require('fs');
 
 //para que el sdk acceso a los objetos
@@ -41,14 +40,6 @@ const deleteObject = (params) => {
         } 
     })
 }
-
-/* const deleteObject = (params) =>{
-    fs.deleteObject(params, function(err, data) {
-        if (err) console.log(err, err.stack);  // error
-        else     console.log();                 // deleted
-      });
-} */
-
 
 
 
