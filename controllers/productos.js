@@ -27,8 +27,7 @@ exports.create = async (req, res) => {
 
        if (req.body._id) {
                 console.log("ID: "+ req.body._id);
-                deleteImage(req);
-
+                updateProducto(req);
                 const bucket = 's3-bucket-nclab09'
                 const file = req.files.imagen
                 console.log("New Product")
@@ -43,16 +42,6 @@ exports.create = async (req, res) => {
                 }, { new: true });
                 res.redirect('/productos');
         
-                /*console.log("ID: "+ req.body._id);
-                await Producto.findByIdAndUpdate(_id, {
-                        nombre: nombre,
-                        descripcion: descripcion,  
-                        marca: marca,
-                        precio: precio,
-                        stock: stock,
-                        imagen: file,    
-                }, { new: true });
-                res.redirect('/productos');*/
         } else {
         //
         console.log(req);
@@ -93,7 +82,7 @@ const saveNewData = (req, url, res) => {
       });
 }
 
-const deleteImage = (req) => {
+const updateProducto = (req) => {
         const  id  = req.params.id;
         Producto.findById({_id:id}).exec(function(err, productos){
                 if(err){
@@ -101,12 +90,10 @@ const deleteImage = (req) => {
                 }else{
                         const imageName = productos.imagen.split('/')
                         console.log(imageName[3])
-                        let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };
-                        
-                                        
+                        let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };              
                         deleteObject(params);
 
-                                
+    
                        
                 }
         })
