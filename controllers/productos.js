@@ -27,20 +27,12 @@ exports.create = async (req, res) => {
 
        if (req.body._id) {
                 console.log("ID: "+ req.body._id);
-                updateProducto(req);
                 const bucket = 's3-bucket-nclab09'
                 const file = req.files.imagen
                 console.log("New Product")
                 const result = await uploadToBucket(bucket, file);
-                await Producto.findByIdAndUpdate(_id, {
-                        nombre: nombre,
-                        descripcion: descripcion,  
-                        marca: marca,
-                        precio: precio,
-                        stock: stock,
-                        imagen: result.Location,    
-                }, { new: true });
-                res.redirect('/productos');
+                updateProducto(req, result.Location, res);
+
         
         } else {
         //
@@ -82,9 +74,9 @@ const saveNewData = (req, url, res) => {
       });
 }
 
-const updateProducto = (req) => {
-        const  id  = req.params.id;
-        Producto.findById({_id:id}).exec(function(err, productos){
+const updateProducto = (req, url, res) => {
+        const  id  = req.body._id;
+        Producto.findById({_id:id}).exec(async function(err, productos){
                 if(err){
                         console.log(err)
                 }else{
@@ -92,8 +84,16 @@ const updateProducto = (req) => {
                         console.log(imageName[3])
                         let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };              
                         deleteObject(params);
-
-    
+                        const { nombre, descripcion, marca, precio, stock, file, _id } = req.body;
+                        await Producto.findByIdAndUpdate(_id, {
+                                nombre: nombre,
+                                descripcion: descripcion,  
+                                marca: marca,
+                                precio: precio,
+                                stock: stock,
+                                imagen: url,    
+                        }, { new: true });
+                        res.redirect('/productos');
                        
                 }
         })
