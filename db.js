@@ -9,5 +9,5 @@ const MONGO_DB = 'procuctsv1';
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
 */
 
-const  url  =  process.env.BD;
+//const  url  =  process.env.BD;
 mongoose.connect(url);
