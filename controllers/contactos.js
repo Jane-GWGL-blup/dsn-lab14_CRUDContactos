@@ -1,7 +1,7 @@
 const { errorMonitor } = require('events');
 const { getBuckets,uploadToBucket,deleteObject } = require("../helpers/s3")
 const path = require('path');
-const Producto = require('../models/productos');
+const Contacto = require('../models/contactos');
 
 module.exports.upload = async (req, res ) => {
         console.log(req);
@@ -15,11 +15,11 @@ module.exports.upload = async (req, res ) => {
 
 exports.index = function (req, res) {
         
-    res.sendFile(path.resolve('views/productos.html'));
+    res.sendFile(path.resolve('views/contactos.html'));
 };
 
 exports.create = async (req, res) => {
-        const { nombre, descripcion, marca, precio, stock, file, _id } = req.body;
+        const { nombre, apellido, email, file, telefono, direccion, _id } = req.body;
     
         console.log(req);
         console.log(req.body._id);
@@ -29,9 +29,9 @@ exports.create = async (req, res) => {
                 console.log("ID: "+ req.body._id);
                 const bucket = 's3-bucket-nclab09'
                 const file = req.files.imagen
-                console.log("New Product")
+                console.log("New Contacto")
                 const result = await uploadToBucket(bucket, file);
-                updateProducto(req, result.Location, res);
+                updateContacto(req, result.Location, res);
 
         
         } else {
@@ -39,7 +39,7 @@ exports.create = async (req, res) => {
         console.log(req);
         const bucket = 's3-bucket-nclab09'
         const file = req.files.imagen
-        console.log("New Product")
+        console.log("New Contacto")
         const result = await uploadToBucket(bucket, file);
         //res.json(result)
         //
@@ -52,70 +52,70 @@ exports.create = async (req, res) => {
 const saveNewData = (req, url, res) => {
 
         
-        var newProducto = new Producto({
+        var newContacto = new Contacto({
                 nombre:req.body.nombre,
-                descripcion:req.body.descripcion,
-                marca:req.body.marca,
-                precio:req.body.precio,
-                stock:req.body.stock,
+                apellido:req.body.apellido,
                 imagen:url,
+                email:req.body.email,
+                telefono:req.body.telefono,
+                direccion:req.body.direccion,
         });
         
-        newProducto.save( function (err) {
+        newContacto.save( function (err) {
                 if(err) {
                 console.log(err)
-                res.status(400).render('errorproducto')    
+                res.status(400).render('errorcontacto')    
                
             } else { 
-                console.log("new Producto "+newProducto);
+                console.log("new Contacto "+newContacto);
                 //console.log(req.body)
-                res.redirect('/productos');
+                res.redirect('/contactos');
             }
       });
 }
 
-const updateProducto = (req, url, res) => {
+const updateContacto = (req, url, res) => {
         const  id  = req.body._id;
-        Producto.findById({_id:id}).exec(async function(err, productos){
+        Contacto.findById({_id:id}).exec(async function(err, contactos){
                 if(err){
                         console.log(err)
                 }else{
-                        const imageName = productos.imagen.split('/')
+                        const imageName = contactos.imagen.split('/')
                         console.log(imageName[3])
                         let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };              
                         deleteObject(params);
-                        const { nombre, descripcion, marca, precio, stock, file, _id } = req.body;
-                        await Producto.findByIdAndUpdate(_id, {
+                        const { nombre, apellido, email, telefono, direccion, file, _id } = req.body;
+                        await Contacto.findByIdAndUpdate(_id, {
                                 nombre: nombre,
-                                descripcion: descripcion,  
-                                marca: marca,
-                                precio: precio,
-                                stock: stock,
-                                imagen: url,    
+                                apellido: apellido,  
+                                imagen: url,
+                                email: email,
+                                telefono: telefono,
+                                direccion: direccion,    
                         }, { new: true });
-                        res.redirect('/productos');
+                        res.redirect('/contactos');
                        
                 }
         })
 }
 
-exports.deleteProducto = async (req, res) => {
+exports.deleteContacto = async (req, res) => {
         const  id  = req.params.id;
-        Producto.findById({_id:id}).exec(function(err, productos){
+        Contacto.findById({_id:id}).exec(function(err, contactos){
                 if(err){
                         console.log(err)
                 }else{
-                        const imageName = productos.imagen.split('/')
+                        const imageName = contactos.imagen.split('/')
                         console.log(imageName[3])
                         let params = {  Bucket: 's3-bucket-nclab09', Key: imageName[3] };
-                        Producto.findByIdAndRemove(id,function(err, producto){
+                        Contacto.findByIdAndRemove(id,function(err, contacto){
                                 if(err){
                                         return res.send(500, err);
                                 }
                                         
                                 deleteObject(params);
-                                res.redirect('/productos');
-                                console.log("Producto eliminado")
+                                res.redirect('/contactos');
+                                console.log("Contacto eliminado")
                                 
                         });
                 }
@@ -128,7 +128,7 @@ exports.deleteProducto = async (req, res) => {
 
 exports.list = async (req, res) => {
 
-        Producto.find({}).exec(async (err, productos) => {
+        Contacto.find({}).exec(async (err, contactos) => {
                 if (err) {
                         return res.send(500, err);
                 }
@@ -136,8 +136,8 @@ exports.list = async (req, res) => {
                 const data = await getBuckets();
                 console.log(data.Buckets);
 
-                res.render('getproducto', {
-                        productos: productos,
+                res.render('getcontacto', {
+                        contactos: contactos,
                         buckets:data.Buckets
              });
         });

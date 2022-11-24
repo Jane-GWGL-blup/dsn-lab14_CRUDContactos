@@ -40,7 +40,7 @@ class Server{
 
 
     routes(){
-        this.app.use('/productos',require('../routes/productos'))
+        this.app.use('/contactos',require('../routes/contactos'))
         //this.app.use('/upload',require('../routes/upload'))
     }
 

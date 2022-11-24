@@ -3,7 +3,7 @@
 }
 
 body {
-    background: rgb(76, 119, 77);
+    background: rgb(76, 83, 119);
     color: #ffffff;
     font-family: 'Merriweather', sans-serif;
 }
@@ -19,7 +19,7 @@ p {
 }
 
 .jumbotron {
-    background: rgb(25, 99, 10);
+    background: rgb(10, 29, 99);
     color: white;
     text-align: center;
 }
@@ -49,15 +49,15 @@ div.caption {
     clear: both;
 }
 thead{
-    background-color: rgb(10, 99, 11);
+    background-color: rgb(10, 29,99);
 }
 
 tbody{
-    background-color: rgb(48, 144, 55);
+    background-color: rgb(19, 91, 158);
 }
 
 .button{
-    background:  rgb(186, 112, 0);
+    background:  rgb(30, 123, 14);
     color: white;
 
 }
@@ -69,8 +69,8 @@ tbody{
 }
 
 .infop{
-   color: rgb(248, 224, 204);
-}
+    color: rgb(45, 191, 32);
+ }
 
 .info{
     font-size: 12px;
@@ -78,7 +78,7 @@ tbody{
 
 .btnAction{
     border: none;
-    background-color: rgb(48, 144, 55);
+    background-color: rgb(18, 85, 148);
 }
 
 a{

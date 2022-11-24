@@ -6,21 +6,21 @@ btnUpload.addEventListener('click',event => {
     event.preventDefault();
     const file= document.querySelector('#file').files[0]
     const name=document.querySelector('#nombre').value
-    const descripcion=document.querySelector('#descripcion').value
+    const apellido=document.querySelector('#apellido').value
     //const imagen=document.querySelector('#file')
-    const marca=document.querySelector('#marca').value
-    const precio=document.querySelector('#precio').value
-    const stock=document.querySelector('#stock').value
+    const email=document.querySelector('#email').value
+    const telefono=document.querySelector('#telefono').value
+    const direccion=document.querySelector('#direccion').value
     const id = document.querySelector('#_id').value
     
     const formData = new FormData()
 
     formData.append('imagen', file);
     formData.append('nombre',name)
-    formData.append('descripcion',descripcion)
-    formData.append('marca',marca)
-    formData.append('precio',precio)
-    formData.append('stock',stock)
+    formData.append('apellido',apellido)
+    formData.append('email',email)
+    formData.append('telefono',telefono)
+    formData.append('direccion',direccion)
     formData.append('_id',id)
     uploadFile(formData); 
     
@@ -29,7 +29,7 @@ btnUpload.addEventListener('click',event => {
 
  const uploadFile = (formData) => {
 
-        fetch('/productos/addproducto',{
+        fetch('/contactos/addcontacto',{
             method:'POST',
             redirect: 'follow',
             body:formData
@@ -44,7 +44,7 @@ btnUpload.addEventListener('click',event => {
 
 const updateFile = (formData) => {
 
-        fetch('/productos/addproducto',{
+        fetch('/contactos/addcontacto',{
             method:'PUT',
             body:formData
         })

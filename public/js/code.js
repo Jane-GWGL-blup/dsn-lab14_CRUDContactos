@@ -1,18 +1,18 @@
-function fill_form(producto) {
+function fill_form(contacto) {
         
-    const dataProducto = JSON.parse(producto);  
+    const dataContacto = JSON.parse(contacto);  
     
-    document.getElementById("nombre").value=dataProducto.nombre;
+    document.getElementById("nombre").value=dataContacto.nombre;
     
-    document.getElementById("descripcion").value=dataProducto.descripcion;
+    document.getElementById("apellido").value=dataContacto.apellido;
    
-    document.getElementById("marca").value=dataProducto.marca;
+    document.getElementById("email").value=dataContacto.email;
    
-    document.getElementById("precio").value=dataProducto.precio;
+    document.getElementById("telefono").value=dataContacto.telefono;
   
-    document.getElementById("stock").value=dataProducto.stock;
+    document.getElementById("direccion").value=dataContacto.direccion;
     
-    document.getElementById("file").files[0]=dataProducto.imagen;
+    document.getElementById("file").files[0]=dataContacto.imagen;
     
-    document.getElementById("_id").value=dataProducto._id;
+    document.getElementById("_id").value=dataContacto._id;
 };
